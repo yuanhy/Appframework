@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yuanhy.library_tools">
+
+    <uses-permission android:name="android.permission.NFC" />
+
+    <application>
+        <activity android:name=".util.demo.rxjavademo.RetrofitAndRxjavaDemoActivity">
+            <!--<intent-filter>-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--</intent-filter>-->
+        </activity>
+    </application>
+
+</manifest>

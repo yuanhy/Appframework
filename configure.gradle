@@ -1,0 +1,6 @@
+ext{
+    //自定义的变量名字
+    VERSION_CODE = 1
+    //一定要改
+    VERSION_NAME = "1.0.1"
+}

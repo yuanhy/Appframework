@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import appframework.yuanhy.com.appframework.R;
 
 public class MainActivity extends AppCompatActivity {
 

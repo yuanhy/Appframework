@@ -5,11 +5,11 @@
     <uses-permission android:name="android.permission.NFC" />
 
     <application>
-        <activity android:name=".util.demo.rxjavademo.RetrofitAndRxjavaDemoActivity">
-            <!--<intent-filter>-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--</intent-filter>-->
+        <activity android:name=".demo.rxjavademo.RetrofitAndRxjavaDemoActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
     </application>
 

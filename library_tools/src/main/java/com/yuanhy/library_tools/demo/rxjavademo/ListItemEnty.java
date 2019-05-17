@@ -323,4 +323,3 @@ public class ListItemEnty implements Serializable {
                 }
             }
         }
-    }

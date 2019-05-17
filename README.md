@@ -1,5 +1,5 @@
 # Appframework
-(```)
+
 引用方式  
 工程的gradle 中添加
 allprojects {
@@ -17,4 +17,4 @@ allprojects {
 dependencies {
 	        implementation 'com.github.yuanhy:Appframework:Tag'
 	}
-(```)
+

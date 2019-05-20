@@ -1,13 +1,13 @@
-package com.yuanhy.library_tools.demo.rxjavademo.presenter;
+package com.yuanhy.appframework.rxjavademo.presenter;
 
-import com.yuanhy.library_tools.demo.rxjavademo.HttpRequest;
+import com.yuanhy.appframework.rxjavademo.HttpRequest;
 import com.yuanhy.library_tools.http.retrofit.RetrofitUtile;
 import com.yuanhy.library_tools.presenter.BasePresenter;
 import com.yuanhy.library_tools.util.YCallBack;
-import com.yuanhy.library_tools.demo.rxjavademo.ListItemEnty;
-import com.yuanhy.library_tools.demo.rxjavademo.PrBean;
-import com.yuanhy.library_tools.demo.rxjavademo.RxjavaDemoApi;
-import com.yuanhy.library_tools.demo.rxjavademo.SyncStudentInfoEnty2;
+import com.yuanhy.appframework.rxjavademo.ListItemEnty;
+import com.yuanhy.appframework.rxjavademo.PrBean;
+import com.yuanhy.appframework.rxjavademo.RxjavaDemoApi;
+import com.yuanhy.appframework.rxjavademo.SyncStudentInfoEnty2;
 import com.yuanhy.library_tools.rxjava.ObServerBean;
 import com.yuanhy.library_tools.rxjava.RxJavaUtil;
 

@@ -1,4 +1,4 @@
-package com.yuanhy.library_tools.http;
+package com.yuanhy.library_tools.http.okhttp3;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,7 +6,9 @@ import android.util.Log;
 import android.webkit.WebSettings;
 
 
-import com.yuanhy.library_tools.util.FileUtil;
+import com.yuanhy.library_tools.http.Http;
+import com.yuanhy.library_tools.http.ProgressListener;
+import com.yuanhy.library_tools.file.FileUtil;
 import com.yuanhy.library_tools.util.LogCatUtil;
 import com.yuanhy.library_tools.util.SharedPreferencesUtil;
 import com.yuanhy.library_tools.util.StringUtil;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -88,7 +91,7 @@ public class AndroidOkHttp3 implements Http {
 
     private static AndroidOkHttp3 androidOkHttp3;
 
-    public OkHttpClient getmFileClient() {
+    public OkHttpClient initFileClient() {
         if (mFileClient == null) {
             mFileClient = new OkHttpClient.Builder()
                     .connectTimeout(100, TimeUnit.SECONDS)
@@ -137,7 +140,7 @@ public class AndroidOkHttp3 implements Http {
 //        client.interceptors().add(new ReceivedCookiesInterceptor()); //你定义的cookie接收监听器
 
         mFileClient = new OkHttpClient.Builder()
-                .cache(cache)
+//                .cache(cache)
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(60 * 2, TimeUnit.SECONDS).build();
 
@@ -240,7 +243,7 @@ public class AndroidOkHttp3 implements Http {
 
     @Override
     public byte[] postJSON2(String url, String json) throws IOException {
-        LogCatUtil.getInstance(mContext).i(TAG, " url: " + url + " json:" + json);
+        AppFramentUtil.logCatUtil.i(TAG, " url: " + url + " json:" + json);
         try {
 
             RequestBody body = RequestBody.create(JSON, json);
@@ -253,9 +256,9 @@ public class AndroidOkHttp3 implements Http {
             if (headers != null) {
                 for (String str : headers) {
                     if (str.startsWith("HC360.SSOUser=")) {
-                        LogCatUtil.getInstance(mContext).i(TAG, "set-cookie:" + str);
+                        AppFramentUtil.logCatUtil.i(TAG, "set-cookie:" + str);
                         String[] strings = str.split("\\;");
-                        LogCatUtil.getInstance(mContext).i(TAG, "set-cookie:" + strings[0]);
+                        AppFramentUtil.logCatUtil.i(TAG, "set-cookie:" + strings[0]);
                         SharedPreferencesUtil.getSharedPreferencesUtil(mContext).putString("HC360.SSOUser=", strings[0]);
                         break;
                     }
@@ -263,7 +266,7 @@ public class AndroidOkHttp3 implements Http {
             }
             return response.body().bytes();
         } catch (Exception e) {
-            LogCatUtil.getInstance(mContext).i(TAG, e.getMessage());
+            AppFramentUtil.logCatUtil.i(TAG, e.getMessage());
             return null;
         }
 
@@ -272,7 +275,7 @@ public class AndroidOkHttp3 implements Http {
 
     @Override
     public byte[] postJSON2SetUserAgent(String url, String json) throws IOException {
-        LogCatUtil.getInstance(mContext).i(TAG, " url: " + url + " json:" + json);
+        AppFramentUtil.logCatUtil.i(TAG, " url: " + url + " json:" + json);
         try {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder()
@@ -404,7 +407,7 @@ public class AndroidOkHttp3 implements Http {
                 int len = 0;
                 FileOutputStream fos = null;
                 // 储存下载文件的目录
-                File dir = new File(downFilePath + "/face");
+                File dir = new File(downFilePath );
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
@@ -424,13 +427,13 @@ public class AndroidOkHttp3 implements Http {
                         int progress = (int) (sum * 1.0f / total * 100);
                         // 下载中更新进度条
                         callBack.onProgress(progress, total * 100);
-                        LogCatUtil.getInstance(mContext).i(TAG, "down file:" + progress);
+                        AppFramentUtil.logCatUtil.i(TAG, "down file:" + progress);
                     }
                     fos.flush();
                     isOk = true;
-                    LogCatUtil.getInstance(mContext).i(TAG, file.getAbsolutePath());
+                    AppFramentUtil.logCatUtil.i(TAG, file.getAbsolutePath());
                 } catch (Exception e) {
-                    LogCatUtil.getInstance(mContext).i(TAG, e.getMessage());
+                    AppFramentUtil.logCatUtil.i(TAG, e.getMessage());
                 } finally {
                     try {
                         if (is != null)
@@ -448,6 +451,97 @@ public class AndroidOkHttp3 implements Http {
                         callBack.onOk(file.getAbsolutePath());
                     } else {
                         callBack.onError("");
+                    }
+
+                }
+            }
+        });
+    }
+
+    /**
+     * 断点下载文件
+     *
+     * @param url
+     * @param downFilePath
+     * @param fileName 文件名字带后缀
+     * @param progressListener
+     */
+    @Override
+    public void downFileBreakpoint(final String url,final String downFilePath,final String fileName,
+                                   final ProgressListener progressListener) {
+        Request request = new Request.Builder().url(url).build();
+        mFileClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 下载失败监听回调
+                progressListener.onError(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                boolean isOk = false;
+                InputStream inputStream = null;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                RandomAccessFile randomAccessFile = null;
+                // 储存下载文件的目录
+                File dir = new File(downFilePath );
+                /**
+                 * 本地文件已下载的大小
+                 */
+                long localFileSize=0;
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                inputStream =   response.body().byteStream();
+                long total = response.body().contentLength();
+                if (total<=0){
+                    progressListener.onError("");
+                    return;
+                }
+                File file = new File(dir, fileName);
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                randomAccessFile = new RandomAccessFile(file,"rw");
+                localFileSize=   randomAccessFile.length();
+                try {
+                    randomAccessFile.seek(localFileSize);//指定文件写入的位置 。例如上次下载了100个，这次送101开始
+
+                    progressListener.onFileSize(total);
+                    long sum = localFileSize;//将本地文件已经下载数量复制给临时变量吗，提供下载进度使用
+                    inputStream.skip(localFileSize);//指定读取流读取的位置，例如上次数据保存了100，这次从101位置开始读取
+                    while ((len = inputStream.read(buf)) != -1) {
+                        randomAccessFile.write(buf, 0, len);
+                        sum += len;
+                        int progress = (int) (sum * 1.0f / total * 100);
+                        // 下载中更新进度条
+                        AppFramentUtil.logCatUtil.i(TAG, "down file:" + progress);
+                        progressListener.onProgress(progress,  total );
+                        progressListener.onProgress(total,sum,isOk);
+                    }
+                    isOk = true;
+                    progressListener.onProgress(total,sum,isOk);
+                    AppFramentUtil.logCatUtil.i(TAG, file.getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    AppFramentUtil.logCatUtil.e(TAG, e.getStackTrace().toString());
+                } finally {
+                    try {
+                        if (inputStream != null)
+                            inputStream.close();
+                    } catch (IOException e) {
+                    }
+                    try {
+                        if (randomAccessFile != null)
+                            randomAccessFile.close();
+                    } catch (IOException e) {
+                    }
+                    if (isOk) {
+                        // 下载完成
+                        progressListener.onOk(file.getAbsolutePath());
+                    } else {
+                        progressListener.onError("");
                     }
 
                 }
@@ -510,7 +604,7 @@ public class AndroidOkHttp3 implements Http {
     @Override
     public String get(String url) throws IOException {
         try {
-            LogCatUtil.getInstance(mContext).i(TAG, url);
+            AppFramentUtil.logCatUtil.i(TAG, url);
 //            String cookie = SharedPreferencesUtil.getSharedPreferencesUtil(mContext).getString("HC360.SSOUser=");
             Request request = new Request.Builder()
                     .get()
@@ -519,7 +613,7 @@ public class AndroidOkHttp3 implements Http {
                     .build();
             Response response = msslClient.newCall(request).execute();//enqueue
             String data = response.body().string();
-            LogCatUtil.getInstance(mContext).i(TAG, data);
+            AppFramentUtil.logCatUtil.i(TAG, data);
             if (StringUtil.isServerExcepInfo(data)) {
                 return "";
             }
@@ -629,7 +723,7 @@ public class AndroidOkHttp3 implements Http {
 
     @Override
     public String postForm(String url, Map<String, String> addHeader, Map<String, String> forms) throws IOException {
-        LogCatUtil.getInstance(mContext).i(TAG, " url: " + url);
+        AppFramentUtil.logCatUtil.i(TAG, " url: " + url);
         FormBody.Builder formBuilder = new FormBody.Builder();
         if (forms != null) {
             Set keys = forms.keySet();
@@ -653,7 +747,7 @@ public class AndroidOkHttp3 implements Http {
         try {
             response = client.newCall(request).execute();
             String jsonString = new String(response.body().bytes(), "UTF-8");
-            LogCatUtil.getInstance(mContext).i(TAG, " jsonString:" + jsonString);
+            AppFramentUtil.logCatUtil.i(TAG, " jsonString:" + jsonString);
             if (StringUtil.isServerExcepInfo(jsonString)) {
                 return "";
             }
@@ -668,7 +762,7 @@ public class AndroidOkHttp3 implements Http {
     @Override
     public String postFormLogin(String url, Map<String, String> addHeader, Map<String, String> forms) throws IOException {
 
-        LogCatUtil.getInstance(mContext).i(TAG, " url: " + url);
+        AppFramentUtil.logCatUtil.i(TAG, " url: " + url);
         FormBody.Builder formBuilder = new FormBody.Builder();
         if (forms != null) {
             Set keys = forms.keySet();
@@ -676,16 +770,10 @@ public class AndroidOkHttp3 implements Http {
             while (iter.hasNext()) {
                 String key = (String) iter.next();
                 String value = forms.get(key);
-                LogCatUtil.getInstance(mContext).i(TAG, " key: " + key + "   value:" + value);
+                AppFramentUtil.logCatUtil.i(TAG, " key: " + key + "   value:" + value);
                 formBuilder.add(key, value);
             }
         }
-
-
-        //=============
-
-
-        //====================
         String cookie = SharedPreferencesUtil.getSharedPreferencesUtil(mContext).getString("HC360.SSOUser=");
         RequestBody formBody = formBuilder.build();
         Request request = new Request.Builder()
@@ -706,23 +794,23 @@ public class AndroidOkHttp3 implements Http {
                     if (str.startsWith("HC360.SSOUser=")) {
                         String[] strings = str.split("\\;");
                         ssou = strings[0];
-                        LogCatUtil.getInstance(mContext).i(TAG, "set-cookie:" + ssou);
+                        AppFramentUtil.logCatUtil.i(TAG, "set-cookie:" + ssou);
                         continue;
                     }
                     if (str.startsWith("JSESSIONID=")) {//JSESSIONID=2294A37B3CAB5C757A120B3BA3D5CA74;path=/;HttpOnly
                         String[] strings = str.split("\\;");
                         jsaonid = strings[0] + ";";
-                        LogCatUtil.getInstance(mContext).i(TAG, "set-cookie:" + jsaonid);
+                        AppFramentUtil.logCatUtil.i(TAG, "set-cookie:" + jsaonid);
                         continue;
                     }
                 }
                 savecookie = jsaonid + ssou;
-                LogCatUtil.getInstance(mContext).i(TAG, "savecookie:" + savecookie);
+                AppFramentUtil.logCatUtil.i(TAG, "savecookie:" + savecookie);
                 SharedPreferencesUtil.getSharedPreferencesUtil(mContext).putString("HC360.SSOUser=", savecookie);
             }
 
             String jsonString = new String(response.body().bytes(), "UTF-8");
-            LogCatUtil.getInstance(mContext).i(TAG, " jsonString: " + jsonString);
+            AppFramentUtil.logCatUtil.i(TAG, " jsonString: " + jsonString);
             if (StringUtil.isServerExcepInfo(jsonString)) {
                 return "";
             }

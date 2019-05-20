@@ -1,26 +1,70 @@
 package com.yuanhy.appframework;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.support.annotation.RequiresApi;
+import android.view.View;
+
+import com.yuanhy.library_tools.activity.BaseActivity;
+import com.yuanhy.appframework.rxjavademo.RetrofitAndRxjavaDemoActivity;
+import com.yuanhy.library_tools.presenter.BasePresenter;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
+//    @BindView( R.id.tv2 )
+//     TextView  tv2;
+//    @BindView( R.id.tv1 )
+//    TextView tv1;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        findViewById(R.id.tv1).setOnClickListener(this);
+        findViewById(R.id.tv2).setOnClickListener(this);
+        findViewById(R.id.tv3).setOnClickListener(this);
+    }
 
-    // Used to load the 'native-lib' library on application startup.
+    /**
+     * 不调用 白色字体(默认)
+     * 调用
+     * setTransparent(boolean transparent)
+     */
+    @Override
+    public void setTransparent() {
+        setTransparent(false);
+    }
+
+    @Override
+    public void onClick(View view){
+        int id=view.getId();
+        Intent intent;
+        switch (id){
+            case R.id.tv1:
+                  intent = new Intent(this,RetrofitAndRxjavaDemoActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv2:
+                   intent = new Intent(this,FileDownActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv3:
+                intent = new Intent(this,AppUpdataActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+
+
+    @Override
+    public BasePresenter createPresenter() {
+        return null;
+    }
     static {
         System.loadLibrary("native-lib");
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Example of a call to a native method
-//        TextView tv = (TextView) findViewById(R.id.sample_text);
-//        tv.setText(stringFromJNI());
-    }
-
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.

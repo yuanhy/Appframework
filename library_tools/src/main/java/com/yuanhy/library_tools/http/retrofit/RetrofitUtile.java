@@ -2,7 +2,7 @@ package com.yuanhy.library_tools.http.retrofit;
 
 import android.content.Context;
 
-import com.yuanhy.library_tools.util.FileUtil;
+import com.yuanhy.library_tools.file.FileUtil;
 import com.yuanhy.library_tools.app.AppFramentUtil;
 import com.yuanhy.library_tools.http.AppUrl;
 

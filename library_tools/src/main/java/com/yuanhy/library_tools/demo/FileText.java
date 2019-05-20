@@ -1,7 +1,6 @@
 package com.yuanhy.library_tools.demo;
 
-import com.yuanhy.library_tools.util.FileUtil;
-import com.yuanhy.library_tools.util.SdCardUtil;
+import com.yuanhy.library_tools.file.FileUtil;
 
 import java.io.File;
 import java.io.IOException;

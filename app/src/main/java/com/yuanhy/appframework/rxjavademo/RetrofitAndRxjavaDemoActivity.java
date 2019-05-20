@@ -1,23 +1,25 @@
-package com.yuanhy.library_tools.demo.rxjavademo;
+package com.yuanhy.appframework.rxjavademo;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.yuanhy.library_tools.R;
 import com.yuanhy.library_tools.activity.BaseActivity;
-import com.yuanhy.library_tools.demo.rxjavademo.presenter.RetrofitAndRxjavaDemoPresenter;
+import com.yuanhy.appframework.rxjavademo.presenter.RetrofitAndRxjavaDemoPresenter;
 import com.yuanhy.library_tools.util.YCallBack;
 
-import butterknife.BindView;
 
 public class RetrofitAndRxjavaDemoActivity extends BaseActivity<RetrofitAndRxjavaDemoPresenter> implements View.OnClickListener {
     TextView infotv;
     Button bt1, bt2, bt3, bt4, bt5, bt6;
     RetrofitAndRxjavaDemoPresenter presenter;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit_and_rxjava_demo);
         infotv = findViewById(R.id.infotv);
@@ -28,6 +30,18 @@ public class RetrofitAndRxjavaDemoActivity extends BaseActivity<RetrofitAndRxjav
         findViewById(R.id.bt5).setOnClickListener(this);
         findViewById(R.id.bt6).setOnClickListener(this);
 //        RxView.attaches()
+    }
+
+    /**
+     * 不调用 白色字体(默认)
+     * true 黑色字体，白色背景
+     * false 白色字体
+     * <p>
+     * 具体使用 ：setTransparent(boolean transparent)
+     */
+    @Override
+    public void setTransparent() {
+
     }
 
 

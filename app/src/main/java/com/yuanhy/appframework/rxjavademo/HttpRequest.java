@@ -1,4 +1,4 @@
-package com.yuanhy.library_tools.demo.rxjavademo;
+package com.yuanhy.appframework.rxjavademo;
 
 import java.util.ArrayList;
 

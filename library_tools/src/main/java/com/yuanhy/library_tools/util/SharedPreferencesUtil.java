@@ -109,7 +109,6 @@ public class SharedPreferencesUtil {
         editor.commit();//提交修改
 
     }
-
     public String getAppUpDataString() {
         //获取sharedPreferences对象
         SharedPreferences sharedPreferences = context.getSharedPreferences(AppUpData, Context.MODE_PRIVATE);

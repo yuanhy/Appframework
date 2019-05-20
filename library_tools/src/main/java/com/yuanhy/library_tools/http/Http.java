@@ -39,5 +39,24 @@ public interface Http {
     String postFileParms(String url, File file, Map<String, Object> paramsMap) throws Exception;
 
     void postFileParmsProgress(String url, File file, Map<String, Object> paramsMap, YCallBack callBack) throws Exception;
-void  downFile(String url, String downFilePath, String fileName, ProgressListener progressListener);
+
+    /**
+     * 普通下载文件
+     *
+     * @param url
+     * @param downFilePath
+     * @param fileName
+     * @param progressListener
+     */
+    void downFile(String url, String downFilePath, String fileName, ProgressListener progressListener);
+
+    /**
+     * 断点下载文件
+     *
+     * @param url
+     * @param downFilePath
+     * @param fileName
+     * @param progressListener
+     */
+    void downFileBreakpoint(String url, String downFilePath, String fileName, ProgressListener progressListener);
 }

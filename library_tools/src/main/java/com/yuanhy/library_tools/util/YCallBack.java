@@ -5,8 +5,8 @@ package com.yuanhy.library_tools.util;
  */
 
 public  abstract  class YCallBack {
-    public  abstract  void requestSuccessful(Object o);
-    public  abstract void  requestFail(Object o);
+    public     void requestSuccessful(Object o){};
+    public    void  requestFail(Object o){};
 
     public   void onOk(Object o){};
     public   void onError(Object o){};

@@ -9,12 +9,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.yuanhy.library_tools.R;
+import com.yuanhy.library_tools.app.AppFramentUtil;
 import com.yuanhy.library_tools.util.LogCatUtil;
 import com.yuanhy.library_tools.util.YCallBack;
 
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -23,6 +25,7 @@ import java.io.IOException;
  */
 
 public class GlideUtil {
+   private static  String TAG="GlideUtil";
 public static void setImage(Context context, String path, ImageView imageView){
     CornerTransform transformation = new CornerTransform(context, dip2px(context, 10));
 //只是绘制左上角和右上角圆角
@@ -81,22 +84,14 @@ public static void setImage(Context context, String path, ImageView imageView){
     // 保存图片到手机指定目录
     private static boolean savaBitmap(String imgFileName, byte[] bytes) {
         boolean   isSuccess = false;
-//        DataOutputStream dataOutputStream;
         FileOutputStream fos = null;
         try {
-//            dataOutputStream = new DataOutputStream(
-//                    new BufferedOutputStream(
-//                            new FileOutputStream(imgFileName)
-//                    )
-//            );
-
             fos = new FileOutputStream(imgFileName);
-//            dataOutputStream.write(bytes);
             fos.write(bytes);
             isSuccess =true;
-            Log.v("SavaImageFilePath","成功--->"+imgFileName);
+           AppFramentUtil.logCatUtil.v ("SavaImageFilePath","成功--->"+imgFileName);
         } catch (IOException e) {
-            Log.v("SavaImageFilePath","失败--->"+imgFileName);
+            AppFramentUtil.logCatUtil.v("SavaImageFilePath","失败--->"+imgFileName);
             e.printStackTrace();
         } finally {
             try {
@@ -109,5 +104,48 @@ public static void setImage(Context context, String path, ImageView imageView){
         }
         return isSuccess;
     }
+    /**
+     * Glide 加载图片保存到本地
+     * @param context
+     * @param imgUrl 图片地址
+     * @param imgFileName 图片文件绝对地址
+     */
+    public static void savaImage(final Context context,String imgUrl, final String  imgFileName, String directoryPath,
+                                 final YCallBack callBack){
+       File file= ImageUtil. newImageFile(directoryPath,imgFileName,imgUrl);
+      if (file==null||!file.exists()){
+          callBack.requestFail(false);
+          LogCatUtil.getInstance(context)
+                  .i(TAG,  imgFileName+" 图片创建失败：");
+          return;
+      }
+        Glide.with(context).load(imgUrl).asBitmap().toBytes().into(new SimpleTarget<byte[]>() {
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                callBack.requestFail(false);
+                LogCatUtil.getInstance(context)
+                        .i("savaImage",  imgFileName+" 图片保存失败：");
+                super.onLoadFailed(e, errorDrawable);
+            }
 
+            @Override
+            public void onResourceReady(byte[] bytes, GlideAnimation<? super byte[]> glideAnimation) {
+                try {
+                    if (bytes==null||bytes.length==0){
+                        callBack.requestFail(false);
+                        return;
+                    }
+                    boolean   isSuccess=   savaBitmap(directoryPath+imgFileName, bytes);
+                    if (isSuccess){
+                        callBack.requestSuccessful(isSuccess);
+                    }else {
+                        callBack.requestFail(isSuccess);
+                    }
+                } catch (Exception e) {
+                    callBack.requestFail(null);
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

@@ -12,6 +12,7 @@ public abstract class ProgressListener {
      * @param done 是否下载结束
      */
     public    void onProgress(long fileSizeBytes, long remainingBytes, boolean done){}
+    public    void onProgress(long fileSizeBytes, long remainingBytes,String datakey ,String thredId ,boolean done){}
     public   void onOk(Object o){};
     public   void onError(Object o){};
     /**

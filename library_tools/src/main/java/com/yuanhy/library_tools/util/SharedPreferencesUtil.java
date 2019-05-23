@@ -61,6 +61,27 @@ public class SharedPreferencesUtil {
         SharedPreferences sharedPreferences = context.getSharedPreferences(appSavaData, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(key, 16);
     }
+
+
+
+    public void putLong(String key, long v) {
+        //获取sharedPreferences对象
+        SharedPreferences sharedPreferences = context.getSharedPreferences(appSavaData, Context.MODE_PRIVATE);
+        //获取editor对象
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        //存储键值对
+        editor.putLong(key, v);
+        //提交
+        editor.commit();//提交修改
+
+    }
+
+    public long getLong(String key) {
+        //获取sharedPreferences对象
+        SharedPreferences sharedPreferences = context.getSharedPreferences(appSavaData, Context.MODE_PRIVATE);
+        return sharedPreferences.getLong(key, 0);
+    }
+
     public void putString(String key, String v) {
         //获取sharedPreferences对象
         SharedPreferences sharedPreferences = context.getSharedPreferences(appSavaData, Context.MODE_PRIVATE);

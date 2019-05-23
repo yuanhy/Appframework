@@ -59,4 +59,21 @@ public interface Http {
      * @param progressListener
      */
     void downFileBreakpoint(String url, String downFilePath, String fileName, ProgressListener progressListener);
+
+    /**
+     * 多线程断点下载文件
+     * @param  multithreadNubm 线程数量
+     * @param url 网络地址
+     * @param downFilePath 本地文件父路径
+     * @param fileName 文件名字
+     * @param progressListener
+     */
+    void downFileMultithreadBreakpoint(long downloadLength,long contentLength,String url, String downFilePath, String fileName, ProgressListener progressListener);
+
+    /**
+     * 获取文件的长度
+     * @param url
+     * @return
+     */
+    long getContentLength (String url,YCallBack callBack);
 }

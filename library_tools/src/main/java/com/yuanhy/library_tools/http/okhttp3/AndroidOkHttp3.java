@@ -407,7 +407,7 @@ public class AndroidOkHttp3 implements Http {
                 int len = 0;
                 FileOutputStream fos = null;
                 // 储存下载文件的目录
-                File dir = new File(downFilePath );
+                File dir = new File(downFilePath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
@@ -463,11 +463,11 @@ public class AndroidOkHttp3 implements Http {
      *
      * @param url
      * @param downFilePath
-     * @param fileName 文件名字带后缀
+     * @param fileName         文件名字带后缀
      * @param progressListener
      */
     @Override
-    public void downFileBreakpoint(final String url,final String downFilePath,final String fileName,
+    public void downFileBreakpoint(final String url, final String downFilePath, final String fileName,
                                    final ProgressListener progressListener) {
         Request request = new Request.Builder().url(url).build();
         mFileClient.newCall(request).enqueue(new Callback() {
@@ -485,17 +485,17 @@ public class AndroidOkHttp3 implements Http {
                 int len = 0;
                 RandomAccessFile randomAccessFile = null;
                 // 储存下载文件的目录
-                File dir = new File(downFilePath );
+                File dir = new File(downFilePath);
                 /**
                  * 本地文件已下载的大小
                  */
-                long localFileSize=0;
+                long localFileSize = 0;
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                inputStream =   response.body().byteStream();
+                inputStream = response.body().byteStream();
                 long total = response.body().contentLength();
-                if (total<=0){
+                if (total <= 0) {
                     progressListener.onError("");
                     return;
                 }
@@ -503,8 +503,8 @@ public class AndroidOkHttp3 implements Http {
                 if (!file.exists()) {
                     file.createNewFile();
                 }
-                randomAccessFile = new RandomAccessFile(file,"rw");
-                localFileSize=   randomAccessFile.length();
+                randomAccessFile = new RandomAccessFile(file, "rw");
+                localFileSize = randomAccessFile.length();
                 try {
                     randomAccessFile.seek(localFileSize);//指定文件写入的位置 。例如上次下载了100个，这次送101开始
 
@@ -517,11 +517,11 @@ public class AndroidOkHttp3 implements Http {
                         int progress = (int) (sum * 1.0f / total * 100);
                         // 下载中更新进度条
                         AppFramentUtil.logCatUtil.i(TAG, "down file:" + progress);
-                        progressListener.onProgress(progress,  total );
-                        progressListener.onProgress(total,sum,isOk);
+                        progressListener.onProgress(progress, total);
+                        progressListener.onProgress(total, sum, isOk);
                     }
                     isOk = true;
-                    progressListener.onProgress(total,sum,isOk);
+                    progressListener.onProgress(total, sum, isOk);
                     AppFramentUtil.logCatUtil.i(TAG, file.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -549,6 +549,131 @@ public class AndroidOkHttp3 implements Http {
         });
     }
 
+    /**
+     * 断点多线程下载文件
+     *
+     * @param url
+     * @param downFilePath
+     * @param fileName         文件名字带后缀
+     * @param progressListener
+     */
+    @Override
+    public void downFileMultithreadBreakpoint(final long startIndex, final long contentLength,
+                                              final String url, final String downFilePath, final String fileName,
+                                              final ProgressListener progressListener) {
+
+        Request request = new Request.Builder()
+                .addHeader("RANGE", "bytes=" + startIndex + "-" + contentLength)
+                .url(url).build();
+        String threadId = String.valueOf(Thread.currentThread().getId());
+        mFileClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 下载失败监听回调
+                progressListener.onError(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String dataKey = fileName + startIndex;//多点下载保存本节点的key
+                long downSizi = 0;//已经下载的长度
+                boolean isOk = false;
+                InputStream inputStream = null;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                RandomAccessFile randomAccessFile = null;
+                // 储存下载文件的目录
+                File dir = new File(downFilePath);
+
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                inputStream = response.body().byteStream();
+                long total = response.body().contentLength();
+                if (total <= 0) {
+                    progressListener.onError("");
+                    return;
+                }
+                File file = new File(dir, fileName);
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                randomAccessFile = new RandomAccessFile(file, "rw");
+                long seekStart = startIndex;
+                /**
+                 * 本地文件已下载的大小
+                 */
+                long them = SharedPreferencesUtil.getSharedPreferencesUtil(mContext).getLong(dataKey);
+                AppFramentUtil.logCatUtil.e(TAG, "datakey:"+dataKey+"  downSiz:"+them);
+
+                if (them ==contentLength-startIndex) {
+                    progressListener.onProgress(total, them, dataKey, threadId ,isOk);
+                    return;
+                }else {
+                    seekStart = seekStart + them;
+                }
+
+                try {
+                    randomAccessFile.seek(seekStart);//指定文件写入的位置 。例如上次下载了100个，这次送101开始
+
+                    long sum = them;//将本地文件已经下载数量复制给临时变量吗，提供下载进度使用
+                    inputStream.skip(them);//指定读取流读取的位置，例如上次数据保存了100，这次从101位置开始读取
+                    while ((len = inputStream.read(buf)) != -1) {
+                        randomAccessFile.write(buf, 0, len);
+                        sum += len;
+                        downSizi = sum;
+                        progressListener.onProgress(total, sum, isOk);
+                        progressListener.onProgress(total, sum, dataKey,threadId ,isOk);
+                    }
+                    isOk = true;
+                    progressListener.onProgress(total, sum, dataKey,threadId , isOk);
+                    progressListener.onProgress(total, sum, isOk);
+                    AppFramentUtil.logCatUtil.i(TAG, file.getAbsolutePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    SharedPreferencesUtil.getSharedPreferencesUtil(mContext).putLong(dataKey, downSizi);
+                    AppFramentUtil.logCatUtil.e(TAG, "datakey:"+dataKey+"  downSiz:"+downSizi+"/n/r"+e.getStackTrace().toString());
+                } finally {
+                    try {
+                        if (inputStream != null)
+                            inputStream.close();
+                    } catch (IOException e) {
+                    }
+                    SharedPreferencesUtil.getSharedPreferencesUtil(mContext).putLong(dataKey, downSizi);
+                    try {
+                        if (randomAccessFile != null)
+                            randomAccessFile.close();
+                    } catch (IOException e) {
+                    }
+                    if (isOk) {
+                        // 下载完成
+                        progressListener.onOk(file.getAbsolutePath());
+                    } else {
+                        progressListener.onError("");
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public long getContentLength(String url,YCallBack callBack) {
+        Request request = new Request.Builder()
+                .url(url).build();
+        mFileClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callBack .onError(e.getStackTrace());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+            long      lenth =response.body().contentLength();
+                callBack .onOk(lenth );
+            }
+        });
+        return 0;
+    }
 
     @Override
     public String postFileParms(String url, File file, Map<String, Object> paramsMap) throws Exception {
@@ -627,9 +752,6 @@ public class AndroidOkHttp3 implements Http {
 
 
     /**
-     *
-     *
-     *
      * 异步 get 请求
      *
      * @param url

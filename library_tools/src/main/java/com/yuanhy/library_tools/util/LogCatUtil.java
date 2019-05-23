@@ -45,4 +45,10 @@ public class LogCatUtil {
             Log.e(tag, logContent);
         }
     }
+
+    public void i(String s) {
+        if (isShowLog) {
+            Log.i(TAG, s);
+        }
+    }
 }

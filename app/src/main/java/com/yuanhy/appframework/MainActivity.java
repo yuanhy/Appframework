@@ -24,6 +24,8 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.tv1).setOnClickListener(this);
         findViewById(R.id.tv2).setOnClickListener(this);
         findViewById(R.id.tv3).setOnClickListener(this);
+        findViewById(R.id.tv4).setOnClickListener(this);
+
     }
 
     /**
@@ -53,6 +55,11 @@ public class MainActivity extends BaseActivity {
                 intent = new Intent(this,AppUpdataActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.tv4:
+                intent = new Intent(this,ImageViewActivity.class);
+                startActivity(intent);
+                break;
+
         }
     }
 
@@ -65,9 +72,4 @@ public class MainActivity extends BaseActivity {
     static {
         System.loadLibrary("native-lib");
     }
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
 }

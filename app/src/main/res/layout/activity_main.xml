@@ -9,6 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,6 +28,12 @@
             android:layout_marginTop="5dp"
             android:id="@+id/tv3"
             android:text="App更新"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv4"
+            android:layout_marginTop="5dp"
+            android:text="单个图片点击全屏和退出全屏"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -42,6 +43,18 @@ public abstract class BaseActicity2 extends Activity implements View.OnClickList
         ActivityManager.getInstance().addActivity(this);
     }
 
+    /**
+     * 设置成黑色状态栏和黑色的字体颜色
+     */
+    public void  setStatusBarColorBlack(){
+        statusBarUtil.setStatusBarColorBlack(this);
+    }
+    /**
+     * 设置成白色状态栏和黑色的字体颜色
+     */
+    public void  setStatusBarColorWhite(){
+        statusBarUtil.setStatusBar(this, true);
+    }
     public void setStatusBar() {
         statusBarUtil.setStatusBar(this, transparent);
     }

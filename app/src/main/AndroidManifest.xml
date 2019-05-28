@@ -68,7 +68,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".FileDownActivity" />
-        <activity android:name=".AppUpdataActivity"></activity>
+        <activity android:name=".AppUpdataActivity" />
+        <activity android:name=".ImageViewActivity"></activity>
     </application>
 
 </manifest>

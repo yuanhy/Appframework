@@ -62,12 +62,12 @@ public class ImageViewActivity extends BaseActivity {
                 if (title_view.getVisibility() == View.GONE) {
                     title_view.setVisibility(View.VISIBLE);
                     tag_view.setVisibility(View.VISIBLE);
-                    setStatusBarColorWhite();
+//                    setStatusBarColorWhite();
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示状态栏
                 } else {
                     title_view.setVisibility(View.GONE);
                     tag_view.setVisibility(View.GONE);
-                    setStatusBarColorBlack();
+//                    setStatusBarColorBlack();
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
 
 

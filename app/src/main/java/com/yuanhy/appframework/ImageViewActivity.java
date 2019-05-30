@@ -71,6 +71,7 @@ public class ImageViewActivity extends BaseActivity {
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
 
 
+
                 }
                 break;
         }

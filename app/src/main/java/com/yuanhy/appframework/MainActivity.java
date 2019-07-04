@@ -25,6 +25,13 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.tv2).setOnClickListener(this);
         findViewById(R.id.tv3).setOnClickListener(this);
         findViewById(R.id.tv4).setOnClickListener(this);
+        findViewById(R.id.tv5).setOnClickListener(this);
+        findViewById(R.id.tv6).setOnClickListener(this);
+        findViewById(R.id.tv7).setOnClickListener(this);
+        findViewById(R.id.tv8).setOnClickListener(this);
+        findViewById(R.id.tv9).setOnClickListener(this);
+        findViewById(R.id.tv10).setOnClickListener(this);
+
 
     }
 
@@ -59,7 +66,30 @@ public class MainActivity extends BaseActivity {
                 intent = new Intent(this,ImageViewActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.tv5:
+                intent = new Intent(this, MyViewActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv6:
+                intent = new Intent(this, ScrollViewActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv7:
+                intent = new Intent(this, ScrollViewActivity2.class);
+                startActivity(intent);
+                break;
+            case R.id.tv8:
+                intent = new Intent(this, SwipeCardActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv9:
+                intent = new Intent(this, FlowLayoutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv10:
+                intent = new Intent(this, TextViewDrawMainActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 

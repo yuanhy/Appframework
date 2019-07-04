@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yuanhy.library_tools.view.FlowLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/dp_44"
+    android:layout_height="match_parent"
+  android:orientation="vertical" >
+    <!--<com.yuanhy.library_tools.view.FlowLayoutView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="#fff475"-->
+        <!--android:layout_height="match_parent">-->
+
+        <com.yuanhy.library_tools.view.FlowLoutItemTextView
+            android:id="@+id/bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="1帅不帅sdffsdfsdf1"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_40"
+        android:text="2帅marginRight dp_40"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:text="3帅不帅，你妹偶3"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_height="wrap_content"
+        android:text="4marginLeft30dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:paddingTop="@dimen/dp_100"
+        android:layout_height="wrap_content"
+        android:text="5算了5"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6你们说啥？？？6"/>
+    <com.yuanhy.library_tools.view.FlowLoutItemTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_100"
+        android:layout_marginTop="30dp"
+        android:text="7喜欢就去追7"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="8就是这样风骚，骚年你还差得远赶快的滚蛋"/>
+    <com.yuanhy.library_tools.view.FlowLoutItemTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_300"
+        android:text="9纵然有人对你太多的不舍，可是你也是去做我恋人资格"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_100"
+        android:layout_marginBottom="@dimen/dp_25"
+        android:text="10你输了"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11快点你行不行，不行别浪费钱"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:paddingTop="@dimen/dp_100"
+        android:layout_height="wrap_content"
+        android:text="12每两个小时爷下不来...两小时。。。。。。"/>
+    <Button
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:text="13谢谢"/>
+        <TextView
+            android:background="#457115"
+            android:paddingTop="@dimen/dp_25"
+            android:text="14你怎么看，paddingTop  dp_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#f00845"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="15你怎么看，看什么啊。知道你厉害layout_marginTop dp_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#ff7845"
+            android:text="16你怎么看，造点数据 "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#45ff45"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="17ayout_marginTop=/dp_20呵呵，瞎鸡巴撤"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#f51f45"
+            android:text="18你怎么看，滚远点，你爱的静悄悄，却看着他呀傻傻笑，看着你老公被人拥入怀抱"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#4578ff"
+            android:text="19你怎么看，算了你也是个奴才，去喂猪去"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#47f845"
+            android:text="20你怎么看,这年头啥都有"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#7f9845"
+            android:text="21经济活动marginLeft 20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:paddingTop="@dimen/dp_100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#f7f845"
+            android:text="22marginRight /dp_30"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#ff9845"
+            android:text="23经济活动marginLeft 20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:background="#f54845"
+            android:text="结束"
+            android:paddingTop="@dimen/dp_100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <!--</com.yuanhy.library_tools.view.FlowLayoutView>-->
+</com.yuanhy.library_tools.view.FlowLayoutView>

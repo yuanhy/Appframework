@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1B8AD1"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <ProgressBar
+        android:id="@+id/progressBarHorizontal"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_3"
+
+        android:max="100"
+        android:progress="0"
+        android:secondaryProgress="100"
+
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_centerVertical="true"
+        android:progressDrawable="@drawable/progress_white"
+        />
+
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/bdwebview"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+    </com.github.lzyzsd.jsbridge.BridgeWebView>
+
+</LinearLayout>

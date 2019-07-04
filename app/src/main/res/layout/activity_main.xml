@@ -36,6 +36,42 @@
             android:text="单个图片点击全屏和退出全屏"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv5"
+            android:layout_marginTop="5dp"
+            android:text="自定义view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv6"
+            android:layout_marginTop="5dp"
+            android:text="ScrollView滑动冲突-外部拦截处理"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv7"
+            android:layout_marginTop="5dp"
+            android:text="ScrollView滑动冲突-内部拦截处理"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv8"
+            android:layout_marginTop="5dp"
+            android:text="探探卡片模式"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv9"
+            android:layout_marginTop="5dp"
+            android:text="自定义流式布局"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+      <TextView
+          android:id="@+id/tv10"
+          android:layout_marginTop="5dp"
+          android:text="自定义View"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
     </LinearLayout>
 </ScrollView>
 

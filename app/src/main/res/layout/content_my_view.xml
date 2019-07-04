@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yuanhy.library_tools.view.TextGroupView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MyViewActivity"
+    tools:showIn="@layout/activity_my_view">
+<TextView
+    android:layout_width="wrap_content"
+    android:background="#124563"
+    android:paddingTop="@dimen/dp_40"
+    android:layout_height="wrap_content"
+    android:text="11111111111111111"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_40"
+        android:background="#124777"
+        android:text="222222222222"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="50dp"
+        android:background="#fff777"
+        android:text="333333333333d"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="30dp"
+        android:background="#9f0777"
+        android:text="444444444445"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:background="#f90077"
+        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:text="5555556"/>
+
+</com.yuanhy.library_tools.view.TextGroupView>
